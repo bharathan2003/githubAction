@@ -1,28 +1,27 @@
-name : Custom Environment Variable
-
+name: Custom Environment Variable
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
-env:
-    Day : Sunday
-    testvar: value - 1
+env:  # Global Environment Variables
+  Day: Sunday
+  testvar: value-1
 
 jobs:
-    mainjob:
-        name: 'print the env variable'
-        runs-on: ubuntu-latest
+  mainjob:
+    name: 'Print the env variable'
+    runs-on: ubuntu-latest
 
-        env:
-          Greetings: Dear
-          testvar: value - 2
-        
-          steps:
-           - name: print-values-of-env-variable
-             run: |
-              echo "$Greetings  $First_name . Today is $Day"
-              echo  "test var $testvar"
-              echo "testvar  ${{env.testvar}}"
-            env:
-               First_name: Bharathan
-               testvar: value-3
+    env:  # Job-level Environment Variables
+      Greetings: Dear
+      testvar: value-2
+
+    steps:
+      - name: Print values of env variable
+        env:  # Step-level Environment Variables
+          First_name: Bharathan
+          testvar: value-3
+        run: |
+          echo "$Greetings $First_name. Today is $Day"
+          echo "Test var $testvar"
+          echo "Test var (from env context) ${{ env.testvar }}"
