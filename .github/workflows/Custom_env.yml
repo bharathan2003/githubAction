@@ -25,3 +25,8 @@ jobs:
           echo "$Greetings $First_name. Today is $Day"
           echo "Test var $testvar"
           echo "Test var (from env context) ${{ env.testvar }}"
+
+      - name: Set a variable on the fly
+        run: echo "My_variable = HELLO from Github Action" >> $GITHUB_ENV
+      - name: Use the dynamic created variable
+        run: echo "$My_variable"
