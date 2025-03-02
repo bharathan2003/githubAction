@@ -19,7 +19,7 @@ jobs:
         
           steps:
            - name: print-values-of-env-variable
-            run: |
+             run: |
               echo "$Greetings  $First_name . Today is $Day"
               echo  "test var $testvar"
               echo "testvar  ${{env.testvar}}"
