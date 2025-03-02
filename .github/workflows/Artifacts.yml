@@ -1,28 +1,33 @@
-name: Artifatcts
+name: Artifacts Demo
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    job1:
-        name: Upload Artifacts
-        runs-on: ubuntu-latest
-        steps:
-            - name: "Create a local file"
-              run: echo "Hi, I am storing this data in this file, so that I can use this in the subsequent jobs within the workflow run . I will upload this file to github storage and dowload from there when needed in this workflow run." > file.txt
+  job1:
+    name: Upload Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a sample file
+        run: echo "This is a test run." > file.txt
 
-            - uses: actions/upload-artifact@v2
-              with:
-                name: file
-                path: file.txt
-                retention-days: 10
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: file  # ✅ Ensure this name is the same in download
+          path: file.txt  # ✅ Keep the structure flat
+          retention-days: 10
 
-    job2:
-        name: Download Artifacts
-        runs-on: ubuntu-latest
-        needs: job1
-        steps:
-            - uses: actions/download-artifact@v2
-              with:
-                name: file
-            - run: cat file.txt
+  job2:
+    name: Download Artifacts
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: file  # ✅ Matches upload name
+          path: downloaded  # ✅ Saves to this folder
+
+      - name: Display the file content
+        run: cat downloaded/file.txt  # ✅ Fix directory issue
