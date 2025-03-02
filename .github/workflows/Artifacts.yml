@@ -8,15 +8,15 @@ jobs:
     name: Upload Artifacts
     runs-on: ubuntu-latest
     steps:
-      - name: Create a local file
-        run: echo "Hi, I am storing this data in this file, so that I can use this in subsequent jobs within the workflow run." > file.txt
+      - name: Create a sample file
+        run: echo "This is a test run." > file.txt
 
-      - name: Upload_Artifact
-        uses: actions/upload-artifact@v4   # ✅ Updated to v4
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: file
-          path: file.txt
-          retention-days: 10  # Optional: Default is 90 days
+          name: file  # ✅ Ensure this name is the same in download
+          path: file.txt  # ✅ Keep the structure flat
+          retention-days: 10
 
   job2:
     name: Download Artifacts
@@ -24,10 +24,10 @@ jobs:
     needs: job1
     steps:
       - name: Download Artifact
-        uses: actions/upload-artifact@v4     # ✅ Updated to v4
+        uses: actions/download-artifact@v4
         with:
-          name: file
-          path: ./downloaded  # Optional: specify where to save the artifact
+          name: file  # ✅ Matches upload name
+          path: downloaded  # ✅ Saves to this folder
 
       - name: Display the file content
-        run: cat ./downloaded/file.txt  # Read and print the content
+        run: cat downloaded/file.txt  # ✅ Fix directory issue
